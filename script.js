@@ -25,7 +25,11 @@ buttons.forEach(function(btn){
 const writeScreen = (number) => {
   currentScreen.textContent === '0' || operationStatus === true
   ? currentScreen.textContent = number
-  : currentScreen.textContent += number
+  : number === "." && !currentScreen.textContent.includes(".")
+    ? currentScreen.textContent += number
+    : number !== "."
+      ? currentScreen.textContent += number
+      : null
 
   operationStatus = false
 }
@@ -39,6 +43,7 @@ const getOperation = (elem, operation) => {
 
 }
 
+
 const clear = () => {
   previousScreen.textContent = ""
   currentScreen.textContent = "0"
@@ -47,28 +52,32 @@ const clear = () => {
 const runOperation = () => {
 
   number2 = Number(currentScreen.textContent)
-
+  let result;
   switch (typeOperation) {
     case 'add':
-      currentScreen.textContent = number1 + number2
+      result = number1 + number2
       previousScreen.textContent = ""
       break
     case 'minus':
-      currentScreen.textContent = number1 - number2
+      result = number1 - number2
       previousScreen.textContent = ""
       break
     case 'divide':
-      currentScreen.textContent = number1 / number2
+      result = number1 / number2
       previousScreen.textContent = ""
       break
     case 'multiply':
-      currentScreen.textContent = number1 * number2
+      result = number1 * number2
       previousScreen.textContent = ""
       break
       
     default:
       break
   }
+
+  result === Infinity
+    ? currentScreen.textContent = "0"
+    : currentScreen.textContent = result
   operationStatus = true
 
 }
